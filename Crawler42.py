@@ -47,7 +47,7 @@ except IOError:
 q = Queue()
 link1 = linkDist(url1, 0)
 q.put(link1)
-lastDist = 0
+lastDist = -1
 
 while not q.empty():
 	# Display the time elapsed.
@@ -57,15 +57,17 @@ while not q.empty():
 	# Explore the next element in the queue.
 	linkDistNow = q.get()
 	disNow = linkDistNow.getDis()
+	print linkDistNow.getLink() + " : " + str(disNow)
 	if int(disNow) != int(lastDist):
 		print "Exploring at depth: " + str(disNow)
 		lastDist = disNow
 	# Check for required url.
 	if linkDistNow.getLink().lower()==url2.lower():
 		print "True: " + str(disNow) + " away."
-		break
+		exit(0)
 	# Do not add elements to queue if already at max distance.
 	if int(disNow) >= int(maxDistance):
+		print "here"
 		continue
 	# Add all links from this page to queue.
 	handle = urllib.urlopen(linkDistNow.getLink()).read().split()
